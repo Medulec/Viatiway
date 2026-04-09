@@ -1,0 +1,53 @@
+services:
+  postgres:
+    image: postgres:18
+    restart: unless-stopped
+    container_name: viatiwayDB
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    ports:
+      - "5432:5432"
+    volumes:
+      - .docker-data/postgres:/var/lib/postgresql
+    networks:
+      - viatiway-network
+
+  backend:
+    restart: unless-stopped
+    build: ./backend
+    container_name: viatiwayBack
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      JWT_SECRET: ${JWT_SECRET}
+      PORT: 3000
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - viatiway-network
+
+  frontend:
+    build: ./frontend
+    restart: unless-stopped
+    container_name: viatiwayFront
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_URL=${VITE_URL}
+    depends_on:
+      - backend
+    networks:
+      - viatiway-network
+
+networks:                       
+  viatiway-network:
+    driver: bridge

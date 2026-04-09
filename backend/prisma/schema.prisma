@@ -1,13 +1,163 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
+}
+
+// --- ENUMY ---
+
+enum Permission {
+  USER
+  ADMIN
+}
+
+enum FileType {
+  IMAGE
+  TEXT
+  RECORDING
+}
+
+enum TripStatus {
+  DRAFT
+  SUBMITTED
+  APPROVED
+}
+
+enum VehicleType {
+  CAR_COMPANY
+  CAR_PRIVATE
+  TRAIN
+  PLANE
+  BUS
+}
+
+enum RateType {
+  KM_RATE_SMALL
+  KM_RATE_LARGE
+  DIET_RATE
+}
+
+// --- MODELE ---
+
+model User {
+  id           String     @id @default(uuid()) @db.Uuid
+  name         String
+  email        String     @unique
+  department   String?
+  role         String?    // np. Senior Consultant
+  accessLevel  Permission @map("access_level")
+  phone        String?
+  homeAddress  String?    @map("home_address")
+  mpk          String?    // Miejsce Powstawania Kosztów
+  createdAt    DateTime   @default(now()) @map("created_at")
+
+  // Relacje
+  trips        Trip[]
+  vehicles     Vehicle[]
+  ratesUpdated Rate[]        @relation("AdminRates")
+  settledTrips TripHistory[] @relation("SettledBy")
+
+  @@map("users")
+}
+
+model Trip {
+  id              String      @id @default(uuid()) @db.Uuid
+  userId          String      @map("user_id") @db.Uuid
+  transportMode   VehicleType @map("transport_mode")
+  vehicleId       String?     @map("vehicle_id") @db.Uuid
+  ticketCost      Decimal?    @map("ticket_cost") @db.Decimal(10, 2)
+  destinationFrom String?     @map("destination_from")
+  destinationTo   String?     @map("destination_to")
+  distance        Decimal?    @db.Decimal(10, 2)
+  purpose         String?     // Cel wizyty
+  client          String?     // Nazwa klienta (wymagane do PDF)
+  breakfastCount  Int         @default(0) @map("breakfast_count")
+  lunchCount      Int         @default(0) @map("lunch_count")
+  dinnerCount     Int         @default(0) @map("dinner_count")
+  startDate       DateTime?   @map("start_date")
+  endDate         DateTime?   @map("end_date")
+  createdAt       DateTime    @default(now()) @map("created_at")
+  status          TripStatus  @default(DRAFT)
+
+  // Relacje
+  user        User          @relation(fields: [userId], references: [id])
+  vehicle     Vehicle?      @relation(fields: [vehicleId], references: [id])
+  history     TripHistory[]
+  attachments Attachment[]
+
+  @@map("trips")
+}
+
+model TripHistory {
+  id                String   @id @default(uuid()) @db.Uuid
+  tripId            String   @map("trip_id") @db.Uuid
+  kmRate            Decimal  @map("km_rate") @db.Decimal(10, 4)
+  dietRate          Decimal  @map("diet_rate") @db.Decimal(10, 2)
+  kmTotal           Decimal  @map("km_total") @db.Decimal(10, 2)
+  dietTotal         Decimal  @map("diet_total") @db.Decimal(10, 2)
+  fuelCost          Decimal? @default(0) @map("fuel_cost") @db.Decimal(10, 2)
+  accommodationCost Decimal? @default(0) @map("accommodation_cost") @db.Decimal(10, 2)
+  parkingCost       Decimal? @default(0) @map("parking_cost") @db.Decimal(10, 2)
+  tollCost          Decimal? @default(0) @map("toll_cost") @db.Decimal(10, 2)
+  otherCost         Decimal? @default(0) @map("other_cost") @db.Decimal(10, 2)
+  otherCostDesc     String?  @map("other_cost_desc")
+  totalAmount       Decimal  @map("total_amount") @db.Decimal(10, 2)
+  settledBy         String?  @map("settled_by") @db.Uuid // nullable — APPROVED ustawia wartość
+  settledAt         DateTime @default(now()) @map("settled_at")
+  notes             String?  // Uwagi B&A
+
+  // Relacje
+  trip    Trip  @relation(fields: [tripId], references: [id])
+  settled User? @relation("SettledBy", fields: [settledBy], references: [id])
+
+  @@map("trips_history")
+}
+
+model Attachment {
+  id        String   @id @default(uuid()) @db.Uuid
+  tripId    String   @map("trip_id") @db.Uuid
+  type      FileType
+  content   String?  @db.Text // tylko dla NOTE / TEXT
+  filePath  String?  @map("file_path")
+  fileName  String?  @map("file_name")
+  mimeType  String?  @map("mime_type")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Relacje
+  trip Trip @relation(fields: [tripId], references: [id])
+
+  @@map("attachments")
+}
+
+model Rate {
+  id        String   @id @default(uuid()) @db.Uuid
+  type      RateType
+  value     Decimal  @db.Decimal(10, 4)
+  validFrom DateTime @map("valid_from")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedBy String?  @map("updated_by") @db.Uuid // nullable — pierwsze stawki mogą być seedowane
+
+  // Relacje
+  admin User? @relation("AdminRates", fields: [updatedBy], references: [id])
+
+  @@map("rates")
+}
+
+model Vehicle {
+  id           String      @id @default(uuid()) @db.Uuid
+  userId       String      @map("user_id") @db.Uuid
+  vehicleType  VehicleType @map("vehicle_type")
+  licensePlate String      @map("license_plate")
+  isDefault    Boolean     @default(true) @map("is_default")
+
+  // Relacje
+  user  User   @relation(fields: [userId], references: [id])
+  trips Trip[]
+
+  @@map("vehicles")
 }
