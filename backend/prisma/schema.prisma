@@ -48,6 +48,7 @@ model User {
   id           String     @id @default(uuid()) @db.Uuid
   name         String
   email        String     @unique
+  passwordHash String     @map("password_hash")
   department   String?
   role         String?    // np. Senior Consultant
   accessLevel  Permission @map("access_level")
