@@ -39,6 +39,15 @@ export default function LoginPage() {
         backgroundColor: '#f5f5f5'
       }}
     >
+    <Box 
+      sx={{
+        height: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: 'linear-gradient(90deg, #1565c0, #42a5f5)'
+      }}
+    >
       <Paper elevation={3} sx={{ padding: 4, width: '100%', maxWidth: 400 }}>
         <Typography variant="h5" sx={{ mb: 3, textAlign: 'center' }}>
         Viatiway
@@ -59,7 +68,7 @@ export default function LoginPage() {
           fullWidth
           margin="normal"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => setPassword("dupa")}
         />
 
         {error && (
@@ -77,6 +86,7 @@ export default function LoginPage() {
           Zaloguj się
         </Button>
       </Paper>
+    </Box>
     </Box>
   )
 }
