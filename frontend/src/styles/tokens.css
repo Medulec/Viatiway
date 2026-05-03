@@ -1,0 +1,244 @@
+
+:root {
+  /* ---------- BRAND PALETTE — Moss ---------- */
+
+  --moss-50:  #f1f8f3;
+  --moss-100: #dcefe0;
+  --moss-200: #b9dec3;
+  --moss-300: #8ec89f;
+  --moss-400: #5aab75;
+  --moss-500: #2f8f55;   /* PRIMARY — główny akcent, CTA, focus */
+  --moss-600: #237344;
+  --moss-700: #1d5c38;
+  --moss-800: #19492e;
+  --moss-900: #133a25;
+
+  /* ---------- CONTRAST PALETTE — Clay ---------- */
+
+  --clay-50:  #fdf4f0;
+  --clay-100: #fbe3d8;
+  --clay-200: #f6c4ad;
+  --clay-300: #ee9c7a;
+  --clay-400: #e07550;
+  --clay-500: #c7583a;   /* SECONDARY — akcent kontrastowy */
+  --clay-600: #a8432b;
+  --clay-700: #853421;
+  --clay-800: #64281a;
+  --clay-900: #451c13;
+
+  /* ---------- WARM NEUTRALS — Sand ---------- */
+
+  --sand-0:   #ffffff;
+  --sand-50:  #faf8f5;   /* app bg — bardzo jasny beżowy biały */
+  --sand-100: #f3efe9;   /* surface-2, hover bg */
+  --sand-200: #e8e2d8;   /* border subtle */
+  --sand-300: #d4ccbe;   /* border */
+  --sand-400: #b5aa98;   /* icon muted, placeholder */
+  --sand-500: #8e8371;   /* text muted */
+  --sand-600: #6b6253;   /* text secondary */
+  --sand-700: #4a4437;   /* text primary on sand */
+  --sand-800: #2e2a21;   /* heading */
+  --sand-900: #1a1812;   /* ink — max contrast */
+
+  /* ---------- SEMANTIC COLORS ---------- */
+  --success:        #2f8f55;   
+  --success-bg:     #dcefe0;
+  --success-fg:     #1d5c38;
+
+  --warning:        #c98a15;   
+  --warning-bg:     #fbeccc;
+  --warning-fg:     #6e4a08;
+
+  --danger:         #c13c3c;   
+  --danger-bg:      #f8dddd;
+  --danger-fg:      #7a1f1f;
+
+  --info:           #2f7a8f;   
+  --info-bg:        #d7ebf1;
+  --info-fg:        #1c4a57;
+
+  /* ---------- SEMANTIC ROLES ---------- */
+  --bg-app:         var(--sand-50);
+  --bg-surface:     var(--sand-0);
+  --bg-surface-2:   var(--sand-100);
+  --bg-inverse:     var(--sand-900);
+
+  --border-subtle:  var(--sand-200);
+  --border-default: var(--sand-300);
+  --border-strong:  var(--sand-500);
+  --border-focus:   var(--moss-500);
+
+  --text-primary:   var(--sand-800);
+  --text-secondary: var(--sand-600);
+  --text-muted:     var(--sand-500);
+  --text-inverse:   var(--sand-0);
+  --text-accent:    var(--moss-700);
+  --text-on-accent: var(--sand-0);
+
+  --accent:         var(--moss-500);
+  --accent-hover:   var(--moss-600);
+  --accent-pressed: var(--moss-700);
+  --accent-soft:    var(--moss-100);
+
+  --accent-2:         var(--clay-500);
+  --accent-2-hover:   var(--clay-600);
+  --accent-2-soft:    var(--clay-100);
+  --accent-2-fg:      var(--clay-800);
+
+  /* ---------- TYPOGRAPHY — Lato (Lato is best polish font fr) ---------- */
+  --font-sans: 'Lato', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+
+  --text-2xs: 0.6875rem;  /* 11px — captions, meta */
+  --text-xs:  0.75rem;    /* 12px — hint, badge */
+  --text-sm:  0.8125rem;  /* 13px — body small, label */
+  --text-md:  0.9375rem;  /* 15px — BODY default (mobile) */
+  --text-lg:  1.0625rem;  /* 17px — body emphasis */
+  --text-xl:  1.25rem;    /* 20px — section title */
+  --text-2xl: 1.5rem;     /* 24px — page title */
+  --text-3xl: 1.875rem;   /* 30px — hero / big number */
+  --text-4xl: 2.25rem;    /* 36px — display */
+
+  --lh-tight:  1.15;
+  --lh-snug:   1.3;
+  --lh-normal: 1.45;
+  --lh-loose:  1.6;
+
+  --fw-regular: 400;
+  --fw-medium:  500;
+  --fw-semibold:700;  
+  --fw-bold:    900;  
+
+  --tracking-tight:  -0.05em;
+  --tracking-normal: 0;
+  --tracking-wide:   0.02em;
+  --tracking-caps:   0.06em;
+
+  /* ---------- SPACING — for 4px base grid ---------- */
+  --space-0:  0;
+  --space-1:  0.25rem;   /* 4px */
+  --space-2:  0.5rem;    /* 8px */
+  --space-3:  0.75rem;   /* 12px */
+  --space-4:  1rem;      /* 16px */
+  --space-5:  1.25rem;   /* 20px */
+  --space-6:  1.5rem;    /* 24px */
+  --space-8:  2rem;      /* 32px */
+  --space-10: 2.5rem;    /* 40px */
+  --space-12: 3rem;      /* 48px */
+  --space-16: 4rem;      /* 64px */
+
+  /* ---------- RADIUS — soft, ~10px ---------- */
+  --radius-none: 0;
+  --radius-xs:   4px;    /* badge, tag */
+  --radius-sm:   6px;    /* checkbox */
+  --radius-md:   10px;   /* input, button — DEFAULT */
+  --radius-lg:   14px;   /* card */
+  --radius-xl:   18px;   /* modal, sheet */
+  --radius-2xl:  24px;   /* hero card */
+  --radius-full: 9999px; /* pill, avatar, switch */
+
+/* -------------- SHADOWS ----------------- */
+  --shadow-xs: 0 1px 2px 0 rgb(46 42 33 / 0.05);
+  --shadow-sm: 0 1px 3px 0 rgb(46 42 33 / 0.08), 0 1px 2px -1px rgb(46 42 33 / 0.06);
+  --shadow-md: 0 4px 8px -2px rgb(46 42 33 / 0.08), 0 2px 4px -2px rgb(46 42 33 / 0.06);
+  --shadow-lg: 0 12px 20px -4px rgb(46 42 33 / 0.10), 0 4px 8px -4px rgb(46 42 33 / 0.06);
+  --shadow-xl: 0 24px 36px -8px rgb(46 42 33 / 0.14), 0 8px 16px -6px rgb(46 42 33 / 0.08);
+
+  --ring-focus: 0 0 0 2px var(--sand-0), 0 0 0 4px var(--moss-500);
+
+  /* ---------- MOTION ---------- */
+  --ease-out:     cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out:  cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring:  cubic-bezier(0.34, 1.26, 0.64, 1);
+  --dur-instant:  80ms;
+  --dur-fast:     140ms;
+  --dur-base:     220ms;
+  --dur-slow:     360ms;
+
+  /* ---------- LAYOUT ---------- */
+  --touch-target: 44px;       /* min. hit target mobile */
+  --input-height: 44px;       /* input, select */
+  --button-height: 44px;      /* domyślny button — wygodne na mobile */
+  --button-height-sm: 36px;
+  --bottombar-height: 64px;
+  --topbar-height: 56px;
+  --content-max: 420px;       /* max szerokość tekstu na mobile */
+
+  /* ---------- Z-INDEX ---------- */
+  --z-base:      0;
+  --z-sticky:    50;
+  --z-overlay:   100;
+  --z-drawer:    200;
+  --z-modal:     300;
+  --z-toast:     400;
+  --z-tooltip:   500;
+}
+
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: var(--lh-normal);
+  color: var(--text-primary);
+  background: var(--bg-app);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection { background: var(--moss-200); color: var(--moss-900); }
+
+
+/* PAPER TEXTURE */
+.v-grain { position: relative; isolation: isolate; }
+.v-grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch' seed='7'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 240px 240px;
+  opacity: 0.08;           /* ~subtle papierowa tekstura */
+  mix-blend-mode: multiply;
+  border-radius: inherit;
+}
+.v-grain--light::after {
+  mix-blend-mode: overlay;
+  opacity: 0.18;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch' seed='3'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.7 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+.v-grain > * { position: relative; z-index: 2; }
+
+
+/* ANIMATIONS */
+@keyframes wave-flow {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.t-display {
+  font-size: var(--text-4xl);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-tight);
+}
+.t-h1 { font-size: var(--text-3xl); font-weight: var(--fw-semibold); line-height: var(--lh-tight); letter-spacing: var(--tracking-tight); }
+.t-h2 { font-size: var(--text-2xl); font-weight: var(--fw-semibold); line-height: var(--lh-snug); }
+.t-h3 { font-size: var(--text-xl);  font-weight: var(--fw-semibold); line-height: var(--lh-snug); }
+.t-h4 { font-size: var(--text-lg);  font-weight: var(--fw-semibold); line-height: var(--lh-snug); }
+.t-body    { font-size: var(--text-md); font-weight: var(--fw-regular); line-height: var(--lh-normal); }
+.t-body-sm { font-size: var(--text-sm); font-weight: var(--fw-regular); line-height: var(--lh-normal); }
+.t-label   { font-size: var(--text-sm); font-weight: var(--fw-medium);  line-height: var(--lh-snug); }
+.t-caption { font-size: var(--text-xs); font-weight: var(--fw-regular); line-height: var(--lh-snug); color: var(--text-secondary); }
+.t-overline{
+  font-size: var(--text-2xs); font-weight: var(--fw-semibold);
+  text-transform: uppercase; letter-spacing: var(--tracking-caps);
+  color: var(--text-secondary);
+}
+.t-mono    { font-family: var(--font-mono); font-size: var(--text-sm); }
