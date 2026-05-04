@@ -2,6 +2,7 @@ import 'dotenv/config'
 import express, { Request, Response } from 'express'
 import { authMiddleware } from './middleware/auth'
 import { adminMiddleware } from './middleware/admin'
+import tripsRouter from './routes/trips.router';
 import Routing from './routes/auth'
 
 const app = express()
@@ -18,6 +19,8 @@ app.get("/health", (req: Request, res: Response) => {
 app.use(authMiddleware) // SECURE V
 
 app.use('/api/v1/admin', authMiddleware, adminMiddleware, /*adminRouter*/)
+
+app.use('/api/v1/trips', authMiddleware, tripsRouter);
 
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`)
