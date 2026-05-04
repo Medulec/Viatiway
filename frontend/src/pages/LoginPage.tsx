@@ -31,7 +31,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div style={{ background: 'var(--bg-app)', minHeight: '100svh' }}>
+    <div style={{ background: 'var(--moss-400)', height: '100svh', display: 'flex', flexDirection: 'column' }}>
       <HeroSection />
       <LoginForm
         email={email}

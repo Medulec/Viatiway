@@ -14,9 +14,12 @@ interface LoginFormProps {
 export default function LoginForm({ email, password, error, onMailChange, onPassWordChange, onSubmit }: LoginFormProps) {
   return (
     <>
-    <div className='v-card v-card--elevated' style={{
+    <div className='v-card v-card--elevated v-login-card' style={{
       flex: 1,
-      borderRadius: 'var(--radius-2xl)',
+      borderTopLeftRadius: 'var(--radius-2xl)',
+      borderTopRightRadius: 'var(--radius-2xl)',
+      borderBottomLeftRadius: 0,
+      borderBottomRightRadius: 0,
       padding: 'var(--space-6)',
       paddingTop: 'var(--space-3)'
       }}>

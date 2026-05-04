@@ -3,7 +3,7 @@ import '../../styles/components.css'
 
 export default function HeroSection() {
     return (
-        <div style={{
+        <div className="v-hero" style={{
             background: 'linear-gradient(160deg, var(--moss-700), var(--moss-500))',
             padding: 'var(--space-8) var(--space-6) var(--space-16)',
             position: 'relative',
@@ -55,22 +55,22 @@ export default function HeroSection() {
             }}>
                 Zaloguj się i wprowadź pierwsze koszty <br />w mniej niż minutę (liczyliśmy).
             </p>
-            <svg style={{ position: 'absolute', bottom: 0, left: 0, width: '200%', height: '90px', animation: 'wave-flow 24s linear infinite' }}
+            <svg className="v-hero__wave" style={{ position: 'absolute', bottom: 0, left: 0, width: '200%', height: '90px', animation: 'wave-flow 24s linear infinite' }}
                 viewBox="0 0 1440 90" preserveAspectRatio="none">
                 <path d="M0,45 C240,0 480,90 720,45 C960,0 1200,90 1440,45 L1440,90 L0,90 Z" fill="var(--moss-800)" />
             </svg>
 
-            <svg style={{ position: 'absolute', bottom: 0, left: 0, width: '200%', height: '90px', animation: 'wave-flow 24s linear infinite' }}
+            <svg className="v-hero__wave" style={{ position: 'absolute', bottom: 0, left: 0, width: '200%', height: '90px', animation: 'wave-flow 24s linear infinite' }}
                 viewBox="0 0 1440 90" preserveAspectRatio="none">
                 <path d="M0,45 C240,0 480,90 720,45 C960,0 1200,90 1440,45 L1440,90 L0,90 Z" fill="var(--moss-800)" />
             </svg>
 
-            <svg style={{ position: 'absolute', bottom: 0, left: 0, width: '200%', height: '90px', animation: 'wave-flow 12s linear -3s infinite' }}
+            <svg className="v-hero__wave" style={{ position: 'absolute', bottom: 0, left: 0, width: '200%', height: '90px', animation: 'wave-flow 12s linear -3s infinite' }}
                 viewBox="0 0 1440 90" preserveAspectRatio="none">
                 <path d="M0,45 C240,0 480,90 720,45 C960,0 1200,90 1440,45 L1440,90 L0,90 Z" fill="var(--moss-600)" />
             </svg>
 
-            <svg style={{ position: 'absolute', bottom: 0, left: 0, width: '200%', height: '90px', animation: 'wave-flow 8s linear -1.5s infinite' }}
+            <svg className="v-hero__wave" style={{ position: 'absolute', bottom: 0, left: 0, width: '200%', height: '90px', animation: 'wave-flow 8s linear -1.5s infinite' }}
                 viewBox="0 0 1440 90" preserveAspectRatio="none">
                 <path d="M0,45 C240,0 480,90 720,45 C960,0 1200,90 1440,45 L1440,90 L0,90 Z" fill="var(--moss-400)" />
             </svg>

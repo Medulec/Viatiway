@@ -340,4 +340,33 @@
   border: none;
   margin: var(--space-2) auto;
 }
-/* ink — max contrast */
+/* ---------- HERO SECTION ---------- */
+@media (orientation: landscape) and (max-height: 500px) {
+  .v-hero {
+    padding-top: var(--space-3) !important;
+    padding-bottom: var(--space-10) !important;
+  }
+  .v-hero h2 {
+    font-size: var(--text-lg) !important;
+    margin-bottom: var(--space-1) !important;
+  }
+  .v-hero p {
+    display: none;
+  }
+}
+
+/* ---------- LOGIN CARD ---------- */
+@media (orientation: landscape) and (max-height: 500px) {
+  .v-login-card {
+    overflow-y: auto;
+    flex: 0 1 auto !important;
+    max-height: 60vh;
+  }
+}
+
+/* ---------- HERO WAVES ---------- */
+@media (orientation: landscape) and (max-height: 500px) {
+  .v-hero__wave {
+    height: 36px !important;
+  }
+}
