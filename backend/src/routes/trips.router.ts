@@ -7,9 +7,11 @@ import {
     submitTrip,
     approveTrip
 } from '../controllers/trips.controller'
+import { calculateThisTrip } from '../controllers/calculations.controller'
 import { adminMiddleware } from '../middleware/admin'
 
 const router = Router();
+
 
 router.get('/', getTrips);
 
@@ -22,5 +24,7 @@ router.delete('/:id', deleteTrip);
 router.put('/:id/submit', submitTrip);
 
 router.put('/:id/approve', adminMiddleware, approveTrip);
+
+router.post('/calculate', calculateThisTrip)
 
 export default router;

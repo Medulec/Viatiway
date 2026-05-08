@@ -1,70 +1,66 @@
-import { prisma } from '../lib/prisma';
+import  prisma  from '../lib/prisma';
+import { RateType, VehicleType } from '@prisma/client';
 
-const getRateByDate = async (type: string, date: Date) => {
-  const rate = await prisma.rate.findFirst({
-    where: {
-      type,
-      validFrom: { lte: date }, 
-    },
-    orderBy: {
-      validFrom: 'desc', 
-    },
-  });
+const getRateByDay = async (type: RateType, date: Date) => {
+    return prisma.rate.findFirst({
+        where: {type, validFrom: {lte: date}},
+        orderBy: {validFrom: 'desc'}
+    })
+}
 
-  return rate;
+const calculateDietUnit = (startDate: Date, endDate: Date): number => {
+    const totalHours = (endDate.getTime() - startDate.getTime()) / 3_600_000;
+    if (totalHours < 0) throw new Error (`${endDate} musi być później niż ${startDate}`);
+
+    if (totalHours < 24) {
+        if (totalHours < 8) return 0;
+        if (totalHours < 12) return 0.5;
+    return 1;
+    }
+    const fullDays = Math.floor(totalHours / 24);
+    const reminingHours = totalHours - fullDays * 24;
+    const partialDayUnits = reminingHours <= 8 ? 0.5 : 1;
+    return fullDays + partialDayUnits;
 };
 
-const calculateDays = (startDate: Date, endDate: Date): number => {
-  const diffMs = endDate.getTime() - startDate.getTime(); 
-  const diffHours = diffMs / (1000 * 60 * 60); 
-
-  return Math.ceil(diffHours / 24);
-};
-
-// ── GŁÓWNA FUNKCJA KALKULACJI ──
 export const calculateTrip = async (data: {
-  startDate: Date;
-  endDate: Date;
-  distance?: number;
-  engineCapacity?: number; // pojemność silnika w cm³
-  breakfastCount: number;
-  lunchCount: number;
-  dinnerCount: number;
-  transportMode: string;
+    startDate: Date;
+    endDate: Date;
+    distance?: number;
+    engineCapacity?: number;
+    breakfastCount: number;
+    lunchCount: number;
+    dinnerCount: number;
+    transportMode: VehicleType;
 }) => {
-  let kmRate = null;
-  let kmTotal = 0;
+    let kmRate: number | null = null;
+    let kmTotal  = 0;
 
-  if (
-    (data.transportMode === 'CAR_PRIVATE' || data.transportMode === 'CAR_COMPANY')
-    && data.distance
-    && data.engineCapacity
-  ) {
-    const rateType = data.engineCapacity <= 900 ? 'KM_RATE_SMALL' : 'KM_RATE_LARGE';
+    if (data.transportMode === 'CAR_PRIVATE') {
+        if(!data.distance) throw new Error('Brak dystansu dla auta prywatnego');
+        if (!data.engineCapacity) throw new Error('Brak pojemności silnika dla auta prywatnego');
 
-    kmRate = await getRateByDate(rateType, data.startDate);
+    const rateType: RateType = data.engineCapacity <= 900 ? 'KM_RATE_SMALL' : 'KM_RATE_LARGE';
+    const rate = await getRateByDay(rateType, data.startDate);
+    if (!rate) throw new Error (`Brak stawki ${rateType} dla daty ${data.startDate.toISOString()}`)
+    kmRate = Number(rate.value);
+    kmTotal = data.distance * kmRate;
+    }
 
-    if (!kmRate) throw new Error('Brak stawki kilometrówki dla podanej daty');
+    const dietRate = await getRateByDay('DIET_RATE', data.startDate)
+    if (!dietRate)  throw new Error ('Brak podanej stawki diety dla tej daty');
 
-    kmTotal = data.distance * kmRate.value;
-  }
+    const dietUnits = calculateDietUnit(data.startDate, data.endDate);
+    const mealDeduciton = data.breakfastCount * 0.25 + data.lunchCount * 0.5 + data.dinnerCount * 0.25;
+    const finaldietUnits = Math.max(0, dietUnits - mealDeduciton);
+    const dietTotal = finaldietUnits * Number(dietRate.value)
 
-  const dietRate = await getRateByDate('DIET_RATE', data.startDate);
-  if (!dietRate) throw new Error('Brak stawki diety dla podanej daty');
-
-  const days = calculateDays(data.startDate, data.endDate);
-
-  const dietTotal =
-    days * dietRate.value
-    - data.breakfastCount * 0.25 * dietRate.value
-    - data.lunchCount    * 0.50 * dietRate.value
-    - data.dinnerCount   * 0.25 * dietRate.value;
-
-  return {
-    days,
-    kmRate: kmRate?.value ?? null,
-    kmTotal: Number(kmTotal.toFixed(2)),
-    dietRate: dietRate.value,
-    dietTotal: Number(Math.max(0, dietTotal).toFixed(2)), // dieta nie może być ujemna
-  };
+    return {
+        dietUnits,
+        finaldietUnits,
+        kmRate,
+        kmTotal: Number(kmTotal.toFixed(2)),
+        dietRate: Number(dietRate.value),
+        dietTotal: Number(dietTotal.toFixed(2)),
+    };
 };

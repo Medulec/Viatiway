@@ -1,6 +1,7 @@
 
 import prisma from '../lib/prisma';
 import { VehicleType } from '@prisma/client';
+import { createTripHistorySnapshot } from './tripsHistory.service';
 
 export const getTripsByUserId = async (userId: string) => {
     const trips = await prisma.trip.findMany({
@@ -136,9 +137,12 @@ export const approveTrip = async (tripId: string, adminId: string) => {
     throw new Error('Tylko przesłane delegacje są możliwe do zatwierdzenia!');
   }
 
-  const updated = await prisma.trip.update({
-    where: {id: tripId},
-    data: {status: "APPROVED"},
-  })
-  return updated;
+  return prisma.$transaction(async (tx) => {
+    const updated = await tx.trip.update({
+      where: { id: tripId },
+      data: { status: "APPROVED" },
+    });
+    await createTripHistorySnapshot(tripId, adminId, tx);
+    return updated;
+  });
 }
