@@ -3,6 +3,7 @@ import express, { Request, Response } from 'express'
 import { authMiddleware } from './middleware/auth'
 import { adminMiddleware } from './middleware/admin'
 import tripsRouter from './routes/trips.router';
+import vehicleRouter from './routes/vehicle.router';
 import Routing from './routes/auth'
 
 const app = express()
@@ -21,6 +22,8 @@ app.use(authMiddleware) // SECURE V
 app.use('/api/v1/admin', authMiddleware, adminMiddleware, /*adminRouter*/)
 
 app.use('/api/v1/trips', authMiddleware, tripsRouter);
+
+app.use('/api/v1/vehicles', authMiddleware, vehicleRouter);
 
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`)

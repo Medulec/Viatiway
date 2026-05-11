@@ -27,7 +27,7 @@ purpose: string;
 client: string;
 transportMode: string;
 distance?: number;
-vechicleId?: number;
+vehicleId?: string;
 ticketCost?: number;
 breakfastCount?: number;
 lunchCount?: number;
@@ -44,7 +44,7 @@ dinnerCount?: number;
             client: data.client,
             transportMode: data.transportMode as VehicleType,
             distance: data.distance,
-            vechicleId: data.vechicleId,
+            vehicleId: data.vehicleId,
             ticketCost: data.ticketCost,
             breakfastCount: data.breakfastCount ?? 0,
             lunchCount: data.lunchCount ?? 0,
