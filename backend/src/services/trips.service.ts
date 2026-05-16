@@ -5,10 +5,18 @@ import { createTripHistorySnapshot } from './tripsHistory.service';
 
 export const getTripsByUserId = async (userId: string) => {
     const trips = await prisma.trip.findMany({
-        where: {userId},
-        orderBy: {createdAt: 'desc'}
+        where: { userId },
+        orderBy: { createdAt: 'desc' },
+        include: {
+            history: { orderBy: { settledAt: 'desc' }, take: 1 },
+        },
     });
-return trips
+    return trips.map(({ history, distance, ticketCost, ...rest }) => ({
+        ...rest,
+        distance: distance != null ? Number(distance) : null,
+        ticketCost: ticketCost != null ? Number(ticketCost) : null,
+        totalAmount: history[0] ? Number(history[0].totalAmount) : null,
+    }));
 };
 
 export const getTripByIdAndUserId = async (tripId: string, userId: string) => {
