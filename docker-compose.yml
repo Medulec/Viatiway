@@ -27,6 +27,8 @@ services:
       DATABASE_URL: ${DATABASE_URL}
       JWT_SECRET: ${JWT_SECRET}
       PORT: 3000
+    volumes:
+      - ./backend/prisma:/app/prisma
     ports:
       - "3000:3000"
     depends_on:
@@ -41,10 +43,12 @@ services:
     container_name: viatiwayFront
     volumes:
       - ./frontend/src:/app/src
+      - ./shared:/app/shared
     ports:
       - "5173:5173"
     environment:
       - VITE_URL=${VITE_URL}
+      - SHARED_PATH=/app/shared
     depends_on:
       - backend
     networks:
