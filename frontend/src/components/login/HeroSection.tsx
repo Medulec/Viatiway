@@ -29,7 +29,7 @@ export default function HeroSection() {
                         strokeLinecap="round" strokeLinejoin="round"
                     />
                 </svg>
-                <span className="t-h4" style={{ color: 'var(--sand-50)' }}>VIATIWAY</span>
+                <span className="t-h4 v-brand" style={{ color: 'var(--sand-50)' }}>VIATIWAY</span>
             </div>
 
             <h2 className="t-h1" style={{
