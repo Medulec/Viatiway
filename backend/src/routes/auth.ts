@@ -11,17 +11,16 @@ router.post('/login', async (req: Request, res: Response) =>{
         return res.status(400).json({ message: "Brak danych"})
     }
     const user = await prisma.user.findUnique({ where: { email }})
-    if (!user) {
-        return res.status(401).json({ message: "Nie znaleziono użytkownika"})
-    }
-    const isPasswordValid = await bcrypt.compare(password, user.passwordHash)
+    const isPasswordValid = user
+        ? await bcrypt.compare(password, user.passwordHash)
+        : false
 
-    if (!isPasswordValid) {
-        return res.status(401).json({ message: "Nieprawidłowe hasło" })
+    if (!user || !isPasswordValid) {
+        return res.status(401).json({ message: "Nieprawidłowe dane logowania" })
     }
 
     const token = jwt.sign(
-        { id: user.id, email: user.email, accessLevel: user.accessLevel }, process.env.JWT_SECRET!, { expiresIn: '12h'}
+        { id: user.id, name: user.name, email: user.email, accessLevel: user.accessLevel }, process.env.JWT_SECRET!, { expiresIn: '12h'}
     )
 
     return res.status(200).json( { token } )
