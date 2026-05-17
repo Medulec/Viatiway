@@ -2,9 +2,10 @@ import type { User } from '../../types'
 
 interface TopBarProps {
     user: User | null
+    onProfileClick: () => void
 }
 
-export default function TopBar({ user }: TopBarProps) {
+export default function TopBar({ user, onProfileClick }: TopBarProps) {
 
     const initials = user?.name ? user.name
     .split(' ').map(word => word[0]).join('').toUpperCase().slice(0, 2) : '??'
@@ -23,7 +24,7 @@ export default function TopBar({ user }: TopBarProps) {
                 </svg>
                 <span className="v-brand">VIATIWAY</span>
             </div>
-            <button className="topbar__avatar">{initials}</button>
+            <button className="topbar__avatar" onClick={onProfileClick}>{initials}</button>
         </header>
     )
 }

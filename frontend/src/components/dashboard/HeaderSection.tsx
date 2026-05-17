@@ -119,7 +119,7 @@ export default function HeaderSection ({ user, trips }: HeaderProps) {
                     textTransform: 'uppercase',
                     color: 'color-mix(in srgb, var(--sand-50) 75%, transparent)'
 
-                }}>DO WYPŁATY · {formatDate()}</span>
+                }}>DO WYPŁATY · {formatDate("na")}</span>
                 <span id='tripSummaryCosts' style={{
                     fontSize: 'var(--text-3xl)',
                     fontWeight: 'var(--fw-bold)'
@@ -128,7 +128,7 @@ export default function HeaderSection ({ user, trips }: HeaderProps) {
                     fontSize: 'var(--text-2xs)',
                     color: 'color-mix(in srgb, var(--sand-50) 75%, transparent)'
 
-                }}>{tripsNumber} delegacji · {kmTotal.toFixed(1)} km</span>
+                }}>{tripsNumber} zatwierdzone · {kmTotal.toFixed(1)} km</span>
             </div>
             <div id="right-header-section"
             style={{

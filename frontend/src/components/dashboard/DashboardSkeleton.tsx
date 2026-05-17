@@ -41,10 +41,30 @@ export default function DashboardSkeleton() {
                 <div className="sk" style={{ height: 152, borderRadius: 18, background: 'var(--sand-200)', animationDelay: '0.1s' }} />
             </div>
 
-            {/* Quick-action buttons */}
             <div className="twin-wrapper">
                 <div className="v-card sk sk--sand" style={{ height: 52, borderRadius: 'var(--radius-lg)' }} />
                 <div className="v-card sk sk--sand" style={{ height: 52, borderRadius: 'var(--radius-lg)', animationDelay: '0.1s' }} />
+            </div>
+
+            <div style={{ padding: 'var(--space-5) var(--space-5) var(--space-3)', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                <div className="sk sk--sand" style={{ width: 130, height: 12, borderRadius: 4 }} />
+                <div className="sk sk--sand" style={{ width: 60, height: 10, borderRadius: 4 }} />
+            </div>
+
+            <div className="v-list" style={{ padding: '0 var(--space-5)' }}>
+                {[0, 0.08, 0.16].map((delay, i) => (
+                    <div key={i} className="v-card v-card--list" style={{ animationDelay: `${delay}s` }}>
+                        <div className="sk sk--sand" style={{ width: 40, height: 48, borderRadius: 8, flexShrink: 0 }} />
+                        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
+                            <div className="sk sk--sand" style={{ width: '60%', height: 12, borderRadius: 4 }} />
+                            <div className="sk sk--sand" style={{ width: '40%', height: 10, borderRadius: 4 }} />
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 'var(--space-2)' }}>
+                            <div className="sk sk--sand" style={{ width: 50, height: 12, borderRadius: 4 }} />
+                            <div className="sk sk--sand" style={{ width: 70, height: 18, borderRadius: 999 }} />
+                        </div>
+                    </div>
+                ))}
             </div>
         </>
     )
