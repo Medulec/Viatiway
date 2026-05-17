@@ -4,6 +4,7 @@ import DashboardPage from './pages/DashboardPage'
 import './App.css'
 import PrivateRoute from './components/PrivateRoute'
 import PublicRoute from './components/PublicRoute'
+import AppLayout from './components/AppLayout'
 
 function App() {
   return (
@@ -14,26 +15,12 @@ function App() {
             <LoginPage />
           </PublicRoute>
         } />
-        <Route path="/" element={
-          <PrivateRoute>
-            <DashboardPage />
-          </PrivateRoute>
-        } />
-        <Route path="/delegacje" element={
-          <PrivateRoute>
-            <div>Delegacje (coming soon)</div>
-          </PrivateRoute>
-        } />
-        <Route path="/pojazdy" element={
-          <PrivateRoute>
-            <div>Pojazdy (coming soon)</div>
-          </PrivateRoute>
-        } />
-        <Route path="/profil" element={
-          <PrivateRoute>
-            <div>Profil (coming soon)</div>
-          </PrivateRoute>
-        } />
+        <Route element={<PrivateRoute><AppLayout /></PrivateRoute>}>
+          <Route path="/" element={<DashboardPage />} />
+          <Route path="/delegacje" element={<div>Delegacje (coming soon)</div>} />
+          <Route path="/pojazdy" element={<div>Pojazdy (coming soon)</div>} />
+          <Route path="/profil" element={<div>Profil (coming soon)</div>} />
+        </Route>
       </Routes>
     </BrowserRouter>
   )

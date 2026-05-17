@@ -1,12 +1,13 @@
 // src/pages/DashboardPage.tsx
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useOutletContext } from 'react-router-dom'
 import type { User, Trip } from '../types'
 import {TopBar, HeaderSection, DashboardSkeleton, TripsSection} from '../components/dashboard'
 
 
 export default function DashboardPage() {
     const navigate = useNavigate()
+    const { onProfileClick } = useOutletContext<{ onProfileClick: () => void }>()
 
     const [user, setUser] = useState<User | null>(() => {
     const token = localStorage.getItem('token')
@@ -47,7 +48,7 @@ export default function DashboardPage() {
     
     return (
         <div>
-            <TopBar user={user} />
+            <TopBar user={user} onProfileClick={onProfileClick} />
             <HeaderSection user={user} trips={trips} />
             <TripsSection trips={trips} />
         </div>
