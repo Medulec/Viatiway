@@ -52,17 +52,24 @@ model User {
   department   String?
   role         String?    // np. Senior Consultant
   accessLevel  Permission @map("access_level")
-  phone        String?
+  phone        String?    
   homeAddress  String?    @map("home_address")
   mpk          String?    // Miejsce Powstawania Kosztów
   createdAt    DateTime   @default(now()) @map("created_at")
+  isActive Boolean @default(true) @map("is_active")
+  mustChangePassword Boolean @default(false) @map("must_change_password")
+  lastLoginAt DateTime? @map("last_login_at")
+  failedLoginCount Int @default(0) @map("failed_login_count")
+  lockedUntil DateTime? @map("locked_until") 
 
-  // Relacje
+
   trips        Trip[]
   vehicles     Vehicle[]
+  refreshTokens RefreshToken[]
   ratesUpdated Rate[]        @relation("AdminRates")
   settledTrips TripHistory[] @relation("SettledBy")
-
+  
+  @@index([lockedUntil])
   @@map("users")
 }
 
@@ -161,4 +168,21 @@ model Vehicle {
   trips Trip[]
 
   @@map("vehicles")
+}
+
+model RefreshToken {
+  id         String    @id @default(uuid()) @db.Uuid
+  userId     String    @map("user_id") @db.Uuid
+  tokenHash  String    @unique @map("token_hash")
+  expiresAt  DateTime  @map("expires_at")
+  revokedAt  DateTime? @map("revoked_at")
+  replacedBy String?   @map("replaced_by") @db.Uuid
+  userAgent  String?   @map("user_agent")
+  ipAddress  String?   @map("ip_address")
+  createdAt  DateTime  @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@map("refresh_tokens")
 }
