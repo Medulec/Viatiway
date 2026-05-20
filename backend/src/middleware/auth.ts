@@ -1,18 +1,18 @@
 import { Request, Response, NextFunction } from 'express'
-import jwt from 'jsonwebtoken'
+import { verifyAccessToken } from '../lib/tokens'
 
-export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
-  const authHeader = req.headers.authorization
+export function authMiddleware(req: Request, res: Response, next: NextFunction): void {
+  const token = req.cookies?.access_token
 
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ message: "Błąd tokenu"})
+  if (!token) {
+    res.status(401).json({ message: 'Brak tokenu' })
+    return
   }
-const token = authHeader?.split(' ')[1]
-try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!)
-    ;(req as any).user = decoded
+
+  try {
+    req.user = verifyAccessToken(token)
     next()
-} catch {
-    return res.status(401).json({ message: 'Token nieprawidłowy' })
-}
+  } catch {
+    res.status(401).json({ message: 'Token nieprawidłowy lub wygasł' })
+  }
 }

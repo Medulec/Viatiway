@@ -10,4 +10,9 @@ export const AUTH_ERRORS = {
 
 export type AuthErrorCode = keyof typeof AUTH_ERRORS
 
-//- [Auth migration plan](auth_migration_plan.md) — IN PROGRESS: localStorage+JWT → httpOnly cookies + refresh rotation. Current step: lib/tokens.ts
+export class AppError extends Error {
+  constructor(public readonly code: AuthErrorCode) {
+    super(AUTH_ERRORS[code].message)
+    this.name = 'AppError'
+  }
+}

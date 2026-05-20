@@ -1,20 +1,10 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 
 interface ProfileDrawerProps {
   open: boolean
   onClose: () => void
-}
-
-function getUser() {
-  const token = localStorage.getItem('token')
-  if (!token) return null
-  try {
-    const payload = JSON.parse(atob(token.split('.')[1]))
-    return { name: payload.name as string, email: payload.email as string }
-  } catch {
-    return null
-  }
 }
 
 function Initials({ name }: { name: string }) {
@@ -40,8 +30,8 @@ function Initials({ name }: { name: string }) {
 }
 
 export default function ProfileDrawer({ open, onClose }: ProfileDrawerProps) {
-  const navigate = useNavigate()
-  const user = getUser()
+  const navigate    = useNavigate()
+  const { user, logout } = useAuth()
 
   useEffect(() => {
     if (open) document.body.style.overflow = 'hidden'
@@ -49,8 +39,8 @@ export default function ProfileDrawer({ open, onClose }: ProfileDrawerProps) {
     return () => { document.body.style.overflow = '' }
   }, [open])
 
-  function handleLogout() {
-    localStorage.removeItem('token')
+  async function handleLogout() {
+    await logout()
     navigate('/login')
   }
 
