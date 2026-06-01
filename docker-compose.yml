@@ -56,4 +56,4 @@ services:
 
 networks:                       
   viatiway-network:
-    driver: bridge
+    external: true

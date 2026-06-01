@@ -87,10 +87,17 @@ model Trip {
   breakfastCount  Int         @default(0) @map("breakfast_count")
   lunchCount      Int         @default(0) @map("lunch_count")
   dinnerCount     Int         @default(0) @map("dinner_count")
-  startDate       DateTime?   @map("start_date")
-  endDate         DateTime?   @map("end_date")
-  createdAt       DateTime    @default(now()) @map("created_at")
-  status          TripStatus  @default(DRAFT)
+  fuelCost          Decimal?    @map("fuel_cost") @db.Decimal(10, 2)
+  parkingCost       Decimal?    @map("parking_cost") @db.Decimal(10, 2)
+  tollCost          Decimal?    @map("toll_cost") @db.Decimal(10, 2)
+  accommodationCost Decimal?    @map("accommodation_cost") @db.Decimal(10, 2)
+  otherCost         Decimal?    @map("other_cost") @db.Decimal(10, 2)
+  otherCostDesc     String?     @map("other_cost_desc")
+  note              String?
+  startDate         DateTime?   @map("start_date")
+  endDate           DateTime?   @map("end_date")
+  createdAt         DateTime    @default(now()) @map("created_at")
+  status            TripStatus  @default(DRAFT)
 
   // Relacje
   user        User          @relation(fields: [userId], references: [id])
@@ -160,14 +167,23 @@ model Vehicle {
   id           String      @id @default(uuid()) @db.Uuid
   userId       String      @map("user_id") @db.Uuid
   vehicleType  VehicleType @map("vehicle_type")
-  licensePlate String      @map("license_plate")
-  isDefault    Boolean     @default(true) @map("is_default")
+  licensePlate    String      @map("license_plate")
+  engineCapacity  Int?        @map("engine_capacity")
+  isDefault       Boolean     @default(true) @map("is_default")
 
   // Relacje
   user  User   @relation(fields: [userId], references: [id])
   trips Trip[]
 
   @@map("vehicles")
+}
+
+model NewsletterSubscriber {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("newsletter_subscribers")
 }
 
 model RefreshToken {
