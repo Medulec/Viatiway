@@ -3,6 +3,16 @@
 
 ---
 
+> ## ⚠️ Status: Enterprise edition — DEFERRED
+>
+> This document specifies the **enterprise edition** of Viatiway — settling business-trip expenses (*delegacje*) for consultants, with an approval workflow, admin panel, and legal Ministry-of-Finance diet/mileage rates.
+>
+> As of **2026**, the project has **pivoted to personal use**. This enterprise specification is **not abandoned** — it will be revived later as an extension of the personal app — but it is **not the active direction**. Concepts below (DRAFT→SUBMITTED→APPROVED workflow, `USER`/`ADMIN` roles, legal diet/km rates, B&A settlement, PDF/Excel export to accounting) are on hold.
+>
+> 👉 For the current direction see [`viatiway_personal.md`](viatiway_personal.md). Kept here as the reference blueprint for the future enterprise edition.
+
+---
+
 ## 1. Introduction and goals
 
 **Context:** Facilitating the registration of business trips, commuting time registration, cost registration, route and travel planning, notepad. Important due to in-house use, making it easier for consultants to settle accounts with the B&A department.
