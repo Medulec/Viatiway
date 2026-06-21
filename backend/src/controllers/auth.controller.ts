@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { login, refresh, logout } from '../services/auth.service'
+import { login, refresh, logout, updateProfile } from '../services/auth.service'
 import { setAccessTokenCookie, setRefreshTokenCookie, clearTokenCookies } from '../lib/cookies'
 import { AUTH_ERRORS, AppError } from '../lib/errors'
 
@@ -62,6 +62,18 @@ export async function refreshHandler(req: Request, res: Response): Promise<void>
 
 export function meHandler(req: Request, res: Response): void {
   res.status(200).json({ user: req.user })
+}
+
+export async function updateMeHandler(req: Request, res: Response): Promise<void> {
+  const { name, phone, homeAddress } = req.body
+
+  try {
+    const user = await updateProfile(req.user!.id, { name, phone, homeAddress })
+    res.status(200).json({ user })
+  } catch (error) {
+    console.error('updateMeHandler error:', error)
+    res.status(500).json({ message: 'Błąd serwera' })
+  }
 }
 
 export async function logoutHandler(req: Request, res: Response): Promise<void> {

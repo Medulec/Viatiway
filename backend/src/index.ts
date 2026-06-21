@@ -13,6 +13,8 @@ import newsletterRouter from './routes/newsletter.router'
 const app = express()
 const PORT = process.env.PORT || 3000
 
+app.set('trust proxy', 1)
+
 app.use(helmet())
 const allowedOrigins = [
   process.env.FRONTEND_URL || 'http://localhost:5173',

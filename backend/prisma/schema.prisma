@@ -42,6 +42,12 @@ enum RateType {
   DIET_RATE
 }
 
+enum Currency {
+  PLN
+  EUR
+  USD
+}
+
 // --- MODELE ---
 
 model User {
@@ -98,6 +104,19 @@ model Trip {
   endDate           DateTime?   @map("end_date")
   createdAt         DateTime    @default(now()) @map("created_at")
   status            TripStatus  @default(DRAFT)
+
+  name                 String?
+  destinationToAddress String?   @map("destination_to_address")
+  budget               Decimal?  @map("budget") @db.Decimal(10, 2)
+  currency             Currency  @default(PLN)
+  travelersCount       Int       @default(1) @map("travelers_count")
+  splitEqually         Boolean   @default(false) @map("split_equally")
+  budgetTransport      Decimal?  @map("budget_transport") @db.Decimal(10, 2)
+  budgetStay           Decimal?  @map("budget_stay") @db.Decimal(10, 2)
+  budgetFood           Decimal?  @map("budget_food") @db.Decimal(10, 2)
+  budgetFun            Decimal?  @map("budget_fun") @db.Decimal(10, 2)
+  budgetShop           Decimal?  @map("budget_shop") @db.Decimal(10, 2)
+  budgetOther          Decimal?  @map("budget_other") @db.Decimal(10, 2)
 
   // Relacje
   user        User          @relation(fields: [userId], references: [id])
@@ -169,6 +188,8 @@ model Vehicle {
   vehicleType  VehicleType @map("vehicle_type")
   licensePlate    String      @map("license_plate")
   engineCapacity  Int?        @map("engine_capacity")
+  name            String?
+  fuelConsumption Decimal?    @map("fuel_consumption") @db.Decimal(4, 2)
   isDefault       Boolean     @default(true) @map("is_default")
 
   // Relacje

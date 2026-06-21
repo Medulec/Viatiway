@@ -105,6 +105,30 @@ export async function refresh(
   return tokens
 }
 
+// ─── updateProfile ────────────────────────────────────────────────────────────
+
+export async function updateProfile(
+  userId: string,
+  data: { name?: string; phone?: string; homeAddress?: string },
+): Promise<LoginResult['user']> {
+
+  const user = await prisma.user.update({
+    where: { id: userId },
+    data: {
+      ...(data.name        !== undefined && { name: data.name }),
+      ...(data.phone       !== undefined && { phone: data.phone }),
+      ...(data.homeAddress !== undefined && { homeAddress: data.homeAddress }),
+    },
+  })
+
+  return {
+    id:          user.id,
+    name:        user.name,
+    email:       user.email,
+    accessLevel: user.accessLevel,
+  }
+}
+
 // ─── logout ───────────────────────────────────────────────────────────────────
 
 export async function logout(rawRefreshToken: string): Promise<void> {

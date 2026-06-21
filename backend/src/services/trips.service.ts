@@ -1,7 +1,38 @@
 
 import prisma from '../lib/prisma';
-import { VehicleType } from '@prisma/client';
+import { VehicleType, Currency } from '@prisma/client';
 import { createTripHistorySnapshot } from './tripsHistory.service';
+
+const toNum = (v: unknown) => (v != null ? Number(v) : null);
+
+type TripInput = {
+    name?: string;
+    destinationFrom?: string;
+    destinationTo?: string;
+    destinationToAddress?: string;
+    startDate?: string;
+    endDate?: string;
+    purpose?: string;
+    client?: string;
+    transportMode?: string;
+    distance?: number;
+    vehicleId?: string;
+    ticketCost?: number;
+    breakfastCount?: number;
+    lunchCount?: number;
+    dinnerCount?: number;
+    note?: string;
+    budget?: number;
+    currency?: string;
+    travelersCount?: number;
+    splitEqually?: boolean;
+    budgetTransport?: number;
+    budgetStay?: number;
+    budgetFood?: number;
+    budgetFun?: number;
+    budgetShop?: number;
+    budgetOther?: number;
+};
 
 export const getTripsByUserId = async (userId: string) => {
     const trips = await prisma.trip.findMany({
@@ -11,72 +42,88 @@ export const getTripsByUserId = async (userId: string) => {
             history: { orderBy: { settledAt: 'desc' }, take: 1 },
         },
     });
-    return trips.map(({ history, distance, ticketCost, ...rest }) => ({
+    return trips.map(({
+        history, distance, ticketCost,
+        budget, budgetTransport, budgetStay, budgetFood, budgetFun, budgetShop, budgetOther,
+        ...rest
+    }) => ({
         ...rest,
-        distance: distance != null ? Number(distance) : null,
-        ticketCost: ticketCost != null ? Number(ticketCost) : null,
+        distance: toNum(distance),
+        ticketCost: toNum(ticketCost),
+        budget: toNum(budget),
+        budgetTransport: toNum(budgetTransport),
+        budgetStay: toNum(budgetStay),
+        budgetFood: toNum(budgetFood),
+        budgetFun: toNum(budgetFun),
+        budgetShop: toNum(budgetShop),
+        budgetOther: toNum(budgetOther),
         totalAmount: history[0] ? Number(history[0].totalAmount) : null,
     }));
 };
 
 export const getTripByIdAndUserId = async (tripId: string, userId: string) => {
     const trip = await prisma.trip.findFirst({
-        where: {id: tripId, userId: userId}
+        where: { id: tripId, userId },
+        include: { history: { orderBy: { settledAt: 'desc' }, take: 1 } }
     });
-return trip
+    if (!trip) return null;
+
+    const {
+        history, distance, ticketCost,
+        budget, budgetTransport, budgetStay, budgetFood, budgetFun, budgetShop, budgetOther,
+        ...rest
+    } = trip;
+    return {
+        ...rest,
+        distance: toNum(distance),
+        ticketCost: toNum(ticketCost),
+        budget: toNum(budget),
+        budgetTransport: toNum(budgetTransport),
+        budgetStay: toNum(budgetStay),
+        budgetFood: toNum(budgetFood),
+        budgetFun: toNum(budgetFun),
+        budgetShop: toNum(budgetShop),
+        budgetOther: toNum(budgetOther),
+        totalAmount: history[0] ? Number(history[0].totalAmount) : null,
+    };
 };
 
-export const createTrip = async (userId: string, data: {
-destinationFrom: string;
-destinationTo: string;
-startDate: string;
-endDate: string;
-purpose: string;
-client: string;
-transportMode: string;
-distance?: number;
-vehicleId?: string;
-ticketCost?: number;
-breakfastCount?: number;
-lunchCount?: number;
-dinnerCount?: number;
-}) => {
+export const createTrip = async (userId: string, data: TripInput) => {
     const trip = await prisma.trip.create({
         data: {
             userId,
+            transportMode: (data.transportMode ?? 'CAR_PRIVATE') as VehicleType,
+            name: data.name,
             destinationFrom: data.destinationFrom,
             destinationTo: data.destinationTo,
-            startDate: new Date(data.startDate),
-            endDate: new Date(data.endDate),
+            destinationToAddress: data.destinationToAddress,
+            ...(data.startDate && { startDate: new Date(data.startDate) }),
+            ...(data.endDate && { endDate: new Date(data.endDate) }),
             purpose: data.purpose,
             client: data.client,
-            transportMode: data.transportMode as VehicleType,
             distance: data.distance,
             vehicleId: data.vehicleId,
             ticketCost: data.ticketCost,
             breakfastCount: data.breakfastCount ?? 0,
             lunchCount: data.lunchCount ?? 0,
             dinnerCount: data.dinnerCount ?? 0,
+            note: data.note,
+            budget: data.budget,
+            ...(data.currency && { currency: data.currency as Currency }),
+            travelersCount: data.travelersCount ?? 1,
+            splitEqually: data.splitEqually ?? false,
+            budgetTransport: data.budgetTransport,
+            budgetStay: data.budgetStay,
+            budgetFood: data.budgetFood,
+            budgetFun: data.budgetFun,
+            budgetShop: data.budgetShop,
+            budgetOther: data.budgetOther,
         }
     });
 return trip
 };
 
-export const updateTrip = async (tripId: string, userId: string, data: Partial<{
-  destinationFrom: string;
-  destinationTo: string;
-  startDate: string;
-  endDate: string;
-  purpose: string;
-  client: string;
-  transportMode: string;
-  distance: number;
-  vehicleId: string;
-  ticketCost: number;
-  breakfastCount: number;
-  lunchCount: number;
-  dinnerCount: number;
-}>) => {
+export const updateTrip = async (tripId: string, userId: string, data: TripInput) => {
   const existing = await prisma.trip.findFirst({
     where: { id: tripId, userId },
   });

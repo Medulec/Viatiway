@@ -6,6 +6,7 @@ import App from './App.tsx'
 import theme from './theme.ts'
 import './styles/tokens.css'
 import './styles/components.css'
+import './styles/newTrip.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

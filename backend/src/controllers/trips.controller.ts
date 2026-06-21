@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
-import { getTripsByUserId, 
+import { getTripsByUserId,
+  getTripByIdAndUserId,
   createTrip as createTripService,
   updateTrip as updateTripService,
   deleteTrip as deleteTripService,
@@ -15,6 +16,25 @@ export const getTrips = async (req: Request, res: Response) => {
     res.status(200).json(trips);
   } catch (error) {
     console.error('getTrips error:', error);
+    res.status(500).json({ message: 'Błąd serwera' });
+  }
+};
+
+export const getTripById = async (req: Request, res: Response) => {
+  try {
+    const userId = req.user!.id;
+    const tripId = req.params.id as string;
+
+    const trip = await getTripByIdAndUserId(tripId, userId);
+
+    if (!trip) {
+      res.status(404).json({ message: 'Delegacja nie znaleziona' });
+      return;
+    }
+
+    res.status(200).json(trip);
+  } catch (error) {
+    console.error('getTripById error:', error);
     res.status(500).json({ message: 'Błąd serwera' });
   }
 };

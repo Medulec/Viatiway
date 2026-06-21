@@ -1,6 +1,7 @@
 export type Permission = 'USER' | 'ADMIN'
 export type TripStatus = 'DRAFT' | 'SUBMITTED' | 'APPROVED'
 export type VehicleType = 'CAR_COMPANY' | 'CAR_PRIVATE' | 'TRAIN' | 'PLANE' | 'BUS'
+export type Currency = 'PLN' | 'EUR' | 'USD'
 
 export interface User {
   id: string
@@ -28,6 +29,18 @@ export interface Trip {
   createdAt: string
   status: TripStatus
   totalAmount: number | null
+  name: string | null
+  destinationToAddress: string | null
+  budget: number | null
+  currency: Currency
+  travelersCount: number
+  splitEqually: boolean
+  budgetTransport: number | null
+  budgetStay: number | null
+  budgetFood: number | null
+  budgetFun: number | null
+  budgetShop: number | null
+  budgetOther: number | null
 }
 
 export interface Vehicle {
@@ -35,5 +48,28 @@ export interface Vehicle {
   userId: string
   vehicleType: VehicleType
   licensePlate: string
+  engineCapacity: number | null
+  name: string | null
+  fuelConsumption: number | null
   isDefault: boolean
+}
+
+export interface CreateTripPayload {
+  name?: string
+  destinationFrom?: string
+  destinationTo?: string
+  destinationToAddress?: string
+  startDate?: string
+  endDate?: string
+  transportMode: VehicleType
+  travelersCount?: number
+  splitEqually?: boolean
+  currency?: Currency
+  budget?: number
+  budgetTransport?: number
+  budgetStay?: number
+  budgetFood?: number
+  budgetFun?: number
+  budgetShop?: number
+  budgetOther?: number
 }
