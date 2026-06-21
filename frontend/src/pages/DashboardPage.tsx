@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useOutletContext, useNavigate } from 'react-router-dom'
+import { useOutletContext } from 'react-router-dom'
 import type { Trip } from '../types'
 import { TopBar, HeaderSection, DashboardSkeleton, TripsSection } from '../components/dashboard'
 import { useAuth } from '../context/AuthContext'
@@ -8,7 +8,6 @@ import { api } from '../lib/api'
 export default function DashboardPage() {
   const { onProfileClick }  = useOutletContext<{ onProfileClick: () => void }>()
   const { user }            = useAuth()
-  const navigate            = useNavigate()
 
   const [trips, setTrips]   = useState<Trip[]>([])
   const [loading, setLoading] = useState(true)
@@ -36,7 +35,7 @@ export default function DashboardPage() {
   return (
     <div>
       <TopBar user={user} onProfileClick={onProfileClick} />
-      <HeaderSection user={user} trips={trips} onNewTrip={() => navigate('/delegacje/nowa')} />
+      <HeaderSection user={user} trips={trips} />
       <TripsSection trips={trips} />
     </div>
   )

@@ -1,1 +1,1 @@
-export type { TripStatus, VehicleType, Trip, Currency, Vehicle, CreateTripPayload } from '@shared/types'
+export type { TripStatus, VehicleType, Trip } from '@shared/types'

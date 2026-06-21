@@ -13,7 +13,7 @@ const VOCATIVE: Record<string, string> = {
     'Anna': 'Anno', 'Ania': 'Aniu', 'Katarzyna': 'Katarzyno', 'Kasia': 'Kasiu',
     'Małgorzata': 'Małgorzato', 'Gosia': 'Gosiu', 'Agnieszka': 'Agnieszko',
     'Krystyna': 'Krystyno', 'Barbara': 'Barbaro', 'Basia': 'Basiu',
-    'Ewa': 'Ewo', 'Zofia': 'Zofio', 'Zosia': 'Zosiu',
+    'Ewa': 'Ewo', 'Zofia': 'Zofio', 'Zofia': 'Zofio', 'Zosia': 'Zosiu',
     'Monika': 'Moniko', 'Marta': 'Marto', 'Magdalena': 'Magdaleno', 'Magda': 'Magdo',
     'Joanna': 'Joanno', 'Asia': 'Asiu', 'Aleksandra': 'Aleksandro', 'Ola': 'Olu',
     'Natalia': 'Natalio', 'Karolina': 'Karolino', 'Paulina': 'Paulino',
@@ -28,13 +28,13 @@ const VOCATIVE: Record<string, string> = {
     'Robert': 'Robercie', 'Szymon': 'Szymonie', 'Dariusz': 'Dariuszu', 'Admin' : 'Adminie', 'Iwona' : 'Iwono'
 }
 
-function getName( { user }: { user: User | null } ) {
+function getName( { user }: HeaderProps ) {
     const firstName = user?.name?.split(' ')[0] ?? ''
     return VOCATIVE[firstName] ?? firstName ?? 'Nieznajomy'
 }
 
 
-function formatDate(typeDate: string): string {
+function formatDate(typeDate): string {
     const date = new Date()
     if (typeDate === 'day') {
     return `${DAYS_PL[date.getDay()]}, ${date.getDate()}. ${MONTHS_PL[date.getMonth()]}`
@@ -43,7 +43,7 @@ function formatDate(typeDate: string): string {
 
 }
 
-export default function HeaderSection ({ user, trips, onNewTrip }: HeaderProps) {
+export default function HeaderSection ({ user, trips }: HeaderProps) {
 
     const now = new Date()
 
@@ -187,8 +187,7 @@ export default function HeaderSection ({ user, trips, onNewTrip }: HeaderProps) 
                     <p className="act__s">Ogólnie · od Stycznia</p>
             </div>
             
-            <div className="v-act-card act--clay v-grain" onClick={onNewTrip} style={{
-                cursor: 'pointer'
+            <div className="v-act-card act--clay v-grain" style={{
             }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <div className="act__icon">

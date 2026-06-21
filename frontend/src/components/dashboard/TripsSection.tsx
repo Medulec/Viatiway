@@ -2,6 +2,7 @@ import type { Trip } from '../../types'
 
 interface TripSectionProps {
     trips: Trip[]
+    onNewTrip: () => void
 }
 
 export default function TripsSection( { trips } : TripSectionProps) {
